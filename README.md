@@ -35,6 +35,21 @@
 - BigQuery performs auto re-clustering in the background
 
 ## BigQuery Best Practices
+### $$$ Cost Reduction
+1. Avoid SELECT * - BigQuery stores data in columnar format, will make it read all the data
+2. Check the estimated data volume (on the top right hand corner) of your queries before running them
+3. Use clustered or partitioned tables
+4. Use streaming inserts with caution
+5. Materialize query results in stages
+
+### Query Performance
+1. Filter on partitioned cols
+2. Denormalizaing data
+3. Use nested or repeated cols
+4. Use ext. data sources appropriately (might produce more cost as it read from GCS)
+5. Reduce data before using a JOIN
+6. Avoid overshading tables
+7. Place the table with the largest no. of rows first, followed by the table with the fewest rows, and then place the remaining tables by decreasing the size
 
 ## BigQuery Internals
 
@@ -153,8 +168,16 @@ WHERE fare_amount = 0
 
 ## Question 4:
 What is the best strategy to make an optimized table in Big Query if your query will always order the results by PUlocationID and filter based on lpep_pickup_datetime? (Create a new table with this strategy)
+```sql
+-- Creating a partition and cluster table
+CREATE OR REPLACE TABLE dez2024-413305.nytaxi.green_tripdata_partitoned_clustered
+PARTITION BY DATE(lpep_pickup_datetime)
+CLUSTER BY PUlocationID AS
+SELECT * FROM dez2024-413305.nytaxi.external_green_tripdata_2022;
+```
+
 - Cluster on lpep_pickup_datetime Partition by PUlocationID
-- Partition by lpep_pickup_datetime  Cluster on PUlocationID
+- -> Partition by lpep_pickup_datetime  Cluster on PUlocationID
 - Partition by lpep_pickup_datetime and Partition by PUlocationID
 - Cluster on by lpep_pickup_datetime and Cluster on PUlocationID
 
@@ -163,20 +186,33 @@ Write a query to retrieve the distinct PULocationID between lpep_pickup_datetime
 06/01/2022 and 06/30/2022 (inclusive)</br>
 
 Use the materialized table you created earlier in your from clause and note the estimated bytes. Now change the table in the from clause to the partitioned table you created for question 4 and note the estimated bytes processed. What are these values? </br>
+```sql
+SELECT DISTINCT PULocationID
+FROM dez2024-413305.nytaxi.green_tripdata_partitoned_clustered
+WHERE 1=1
+AND lpep_pickup_datetime >= '2022-06-01'
+AND lpep_pickup_datetime <= '2022-06-30';
+```
+![CleanShot 2024-02-11 at 22 42 26](https://github.com/alangan17/DataEngineerZoomCamp2024Week3/assets/14330702/528e6efe-e949-4ef6-ba74-2774e4474169)
+
+
+![CleanShot 2024-02-11 at 22 41 17](https://github.com/alangan17/DataEngineerZoomCamp2024Week3/assets/14330702/d793b3d7-d882-49c3-80a2-06db63dd4121)
+
 
 Choose the answer which most closely matches.</br> 
 
 - 22.82 MB for non-partitioned table and 647.87 MB for the partitioned table
-- 12.82 MB for non-partitioned table and 1.12 MB for the partitioned table
+- -> 12.82 MB for non-partitioned table and 1.12 MB for the partitioned table
 - 5.63 MB for non-partitioned table and 0 MB for the partitioned table
 - 10.31 MB for non-partitioned table and 10.31 MB for the partitioned table
 
 
 ## Question 6: 
 Where is the data stored in the External Table you created?
+![CleanShot 2024-02-11 at 22 44 01](https://github.com/alangan17/DataEngineerZoomCamp2024Week3/assets/14330702/5a44958b-996f-45f3-beb4-3e8d8f84b764)
 
 - Big Query
-- GCP Bucket
+- -> GCP Bucket
 - Big Table
 - Container Registry
 
@@ -184,7 +220,7 @@ Where is the data stored in the External Table you created?
 ## Question 7:
 It is best practice in Big Query to always cluster your data:
 - True
-- False
+- -> False
 
 
 ## (Bonus: Not worth points) Question 8:
