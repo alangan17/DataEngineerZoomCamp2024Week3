@@ -8,30 +8,31 @@
 
 [BigQuery Basic SQL](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/03-data-warehouse/big_query.sql)
 
-# Lesson Learned
+## Lesson Learned
+
 ```mermaid
 mindmap
-    root((Week 3: Data Warehouse - BigQuery))
+    id1)Week 3: Data Warehouse(
         OLTP
-            ↔️row-based database
-            e.g. SQL Server, PostgreSQL, MySQL
-            🐁Good for processing transactions
+            id2["↔row-based database"]
+            id3["e.g. SQL Server, PostgreSQL, MySQL"]
+            id4["🐁Good for processing transactions"]
         OLAP
-            ↕️columnar database
-            e.g. DuckDB, BigQuery, Redshift
-            🐘Good for analyze large vol. of data to support decision-making
+            id5["↕️columnar database"]
+            id6["e.g. DuckDB, BigQuery, Redshift"]
+            id7["🐘Good for analyzing large vol. of data to support decision-making"]
         BigQuery
-            ☁️Serverless Data Warehouse
-            💰Save cost in DB installation and management
-            Scalability and high-availability
+            id8["☁️Serverless Data Warehouse"]
+            id9["💰Save cost in DB installation and management"]
+            id10["Scalability and high-availability"]
         Partitioning in BigQuery
-            🗓️Support Time-unit column
-            Known cost saving
+            id11["🗓️Support Time-unit column"]
+            id12["Known cost saving"]
         Clustering in BigQuery
-            Unknown cost saving
+            id13["Unknown cost saving"]
         Best Practices
-            ✨Avoid SELECT *
-            Filter on partitioned columns
+            id14["✨Avoid SELECT *"]
+            id15["Filter on partitioned columns"]
 ```
 
 ### What is data warehouse
