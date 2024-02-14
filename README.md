@@ -9,8 +9,30 @@
 [BigQuery Basic SQL](https://github.com/DataTalksClub/data-engineering-zoomcamp/blob/main/03-data-warehouse/big_query.sql)
 
 # Lesson Learned
-## Data Warehouse
-### OLAP vs OLTP
+```mermaid
+mindmap
+    root((Week 3: Data Warehouse - BigQuery))
+        OLTP
+            ↔️row-based database
+            e.g. SQL Server, PostgreSQL, MySQL
+            🐁Good for processing transactions
+        OLAP
+            ↕️columnar database
+            e.g. DuckDB, BigQuery, Redshift
+            🐘Good for analyze large vol. of data to support decision-making
+        BigQuery
+            ☁️Serverless Data Warehouse
+            💰Save cost in DB installation and management
+            Scalability and high-availability
+        Partitioning in BigQuery
+            🗓️Support Time-unit column
+            Known cost saving
+        Clustering in BigQuery
+            Unknown cost saving
+        Best Practices
+            ✨Avoid SELECT *
+            Filter on partitioned columns
+```
 
 ### What is data warehouse
 - OLAP solution
